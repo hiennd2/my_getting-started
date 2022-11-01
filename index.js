@@ -8,8 +8,8 @@ const route = require('./src/router/index')
 
 app.use(express.json());
 
-const mongodb = require('./src/services/mongo/connections/mongo')
-const redis = require('./src/services/redis/connections/redis')
+const mongodb = require('./src/connections/mongo')
+const redis = require('./src/connections/redis')
 mongodb.connect()
 redis.connect()
 
