@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const uri = require('../configs/index')
+const uri = require('../../../configs/index')
 
 async function connect() {
     try {
