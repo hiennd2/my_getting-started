@@ -5,11 +5,11 @@ const Schema = mongoose.Schema
 const PostSchema = new Schema({
     title: String,
     content: String,
-    tags: [Number],
+    tags: [String],
 })
 
 
-PostSchema.index({title: "text"}) // single field, features: expires, unique
+PostSchema.index({"tags": 1}) // single field, features: expires, unique
 
 const Post = mongoose.model("Post", PostSchema)
 

@@ -10,7 +10,6 @@ exports.newPost = async (req, res) => {
         const post = new Post()
         post.title = "test_title"
         post.content = "test_content"
-
         // dieu kien de luu
 
         // luu vao database
@@ -59,5 +58,31 @@ exports.getPosts = async (req, res) => {
     } catch (error) {
         console.log('Get Post Fail')
         console.log(error)
+    }
+}
+
+exports.createPost = async (req, res) => {
+    try {
+        let tags = ["tag2", "tag4", "tag5"]
+        const post = new Post ({
+            title: "Title 3",
+            content: "This is post 3",
+            tags: tags
+        })
+
+        await post.save()
+        res.json('Create Post Success!')
+    } catch (error) {
+        console.log('Create Post fail: ', error)
+    }
+}
+
+exports.findPost = async (req, res) => {
+    try {
+        const tag = 'tag5'
+        const posts =  await Post.find({ "tags": tag})
+        res.json(posts)
+    } catch (error) {
+        console.log('Find Error')
     }
 }
