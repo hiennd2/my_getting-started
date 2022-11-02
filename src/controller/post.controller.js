@@ -2,6 +2,8 @@ const Post = require('../model/Post')
 const redisConnection = require('../connections/redis')
 const clientRedis = redisConnection.client
 const axios = require('axios')
+const Tag = require('../model/Tag')
+const testService = require('../services/test')
 
 exports.newPost = async (req, res) => {
     try {
@@ -25,7 +27,7 @@ exports.newPost = async (req, res) => {
 
 exports.getPost = async (req, res) => {
     try {
-        
+        res.json('This is getPost')
     } catch (error) {
         console.log('get post error')
     }
@@ -63,14 +65,20 @@ exports.getPosts = async (req, res) => {
 
 exports.createPost = async (req, res) => {
     try {
-        let tags = ["tag2", "tag4", "tag5"]
+        const newPost = req.body
+
+        if (!newPost.title || !newPost.content) {
+            res.json("Title or content is empty!")
+            return;
+        }
+
         const post = new Post ({
-            title: "Title 3",
-            content: "This is post 3",
-            tags: tags
+            id: newPost.id,
+            title: newPost.title,
+            content: newPost.content,
+            tags: newPost.tags || ["other"]
         })
 
-        await post.save()
         res.json('Create Post Success!')
     } catch (error) {
         console.log('Create Post fail: ', error)
@@ -79,10 +87,23 @@ exports.createPost = async (req, res) => {
 
 exports.findPost = async (req, res) => {
     try {
-        const tag = 'tag5'
-        const posts =  await Post.find({ "tags": tag})
+        const query = req.query
+        const tags = query.tags
+        const subtitle = query.subTitle
+        console.log("typeof tags: ", typeof tags)
+        console.log(tags)
+        const posts =  await Post.find({ $text: { $search: `${subtitle} ${tags}`}}).exec()
         res.json(posts)
     } catch (error) {
-        console.log('Find Error')
+        console.log('Find Error: ', error)
     }
+}
+
+
+exports.test = (req, res) => {
+    const id = req.params.id
+
+    const body = req.body
+    // validate body.title bat buoc
+    // body.title max length 50
 }

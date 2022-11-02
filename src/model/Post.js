@@ -3,13 +3,13 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema
 
 const PostSchema = new Schema({
-    title: String,
+    id: Number,
+    title: {type: String, required: true, maxLength: 120},
     content: String,
-    tags: [String],
+    tags: [Number],
 })
 
-
-PostSchema.index({"tags": 1}) // single field, features: expires, unique
+PostSchema.index({id: 1}) // single field, features: expires, unique
 
 const Post = mongoose.model("Post", PostSchema)
 
